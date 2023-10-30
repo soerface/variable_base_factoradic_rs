@@ -12,7 +12,6 @@ fn factorial(n: u32) -> u32 {
     }
 }
 
-
 impl FromStr for VariableBaseFactoradicNumber {
     type Err = String;
 
@@ -21,11 +20,18 @@ impl FromStr for VariableBaseFactoradicNumber {
         for (i, c) in value.chars().rev().enumerate() {
             let base = i as u32 + 2;
             if base > 10 {
-                return Err(String::from("Numbers larger than 3628799 are simply illegal"));
+                return Err(String::from(
+                    "Numbers larger than 3628799 are simply illegal",
+                ));
             }
             match c.to_digit(base) {
-                None => return Err(format!("Invalid input: Digit at position {} must be in base {}", i, base)),
-                Some(d) => n += d * factorial(base - 1)
+                None => {
+                    return Err(format!(
+                        "Invalid input: Digit at position {} must be in base {}",
+                        i, base
+                    ))
+                }
+                Some(d) => n += d * factorial(base - 1),
             }
         }
         Ok(Self { value: n })
@@ -33,7 +39,6 @@ impl FromStr for VariableBaseFactoradicNumber {
 }
 
 impl VariableBaseFactoradicNumber {
-
     pub fn try_new(value: u32) -> Result<Self, &'static str> {
         if value > 3628799 {
             return Err("Numbers larger than 3628799 are simply illegal");
@@ -61,8 +66,8 @@ impl VariableBaseFactoradicNumber {
 
 #[cfg(test)]
 mod tests {
-    use rstest::rstest;
     use super::*;
+    use rstest::rstest;
 
     #[rstest]
     #[case(0, 1)]

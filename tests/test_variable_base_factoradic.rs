@@ -68,7 +68,12 @@ fn to_maximum_factoradic() {
 #[test]
 fn from_too_large_factoradic() {
     let v = "1000000000".parse::<VariableBaseFactoradicNumber>();
-    assert_eq!(v.err(), Some(String::from("Numbers larger than 3628799 are simply illegal")));
+    assert_eq!(
+        v.err(),
+        Some(String::from(
+            "Numbers larger than 3628799 are simply illegal"
+        ))
+    );
 }
 
 #[rstest]
@@ -77,14 +82,24 @@ fn from_too_large_factoradic() {
 #[case("400", 2, 4)]
 #[case("404", 0, 2)]
 #[case("A", 0, 2)]
-fn from_invalid_base(#[case] pseudo_factoradic: String, #[case] position: usize, #[case] expected_base: u32) {
+fn from_invalid_base(
+    #[case] pseudo_factoradic: String,
+    #[case] position: usize,
+    #[case] expected_base: u32,
+) {
     let v = pseudo_factoradic.parse::<VariableBaseFactoradicNumber>();
-    let expected_error = format!("Invalid input: Digit at position {} must be in base {}", position, expected_base);
+    let expected_error = format!(
+        "Invalid input: Digit at position {} must be in base {}",
+        position, expected_base
+    );
     assert_eq!(v.err(), Some(expected_error));
 }
 
 #[test]
 fn to_too_large_factoradic() {
     let v = VariableBaseFactoradicNumber::try_new(3628800);
-    assert_eq!(v.err(), Some("Numbers larger than 3628799 are simply illegal"));
+    assert_eq!(
+        v.err(),
+        Some("Numbers larger than 3628799 are simply illegal")
+    );
 }
